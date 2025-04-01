@@ -1,6 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from app import app
-
+from flask_login import UserMixin
+from flask_bcrypt import generate_password_hash, check_password_hash
 app.config.from_object('config.Config')
 db = SQLAlchemy(app)
 
@@ -13,6 +14,7 @@ class Producto(db.Model):
 
     def __repr__(self):
         return f'<Producto {self.nombre}>'
+
 
 # Crear la base de datos
 with app.app_context():

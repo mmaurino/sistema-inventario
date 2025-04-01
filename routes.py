@@ -58,3 +58,22 @@ def inventario():
     else:
         productos = Producto.query.all()  # Si no hay búsqueda, mostrar todos los productos
     return render_template('inventario.html', productos=productos)
+
+@app.route('/reportes')
+def reportes():
+    # Obtener datos del inventario
+    productos = Producto.query.all()
+
+    # Calcular métricas
+    total_productos = len(productos)
+    stock_bajo = [p for p in productos if p.stock < 5]
+    producto_mas_caro = max(productos, key=lambda p: p.precio, default=None)
+    producto_mas_barato = min(productos, key=lambda p: p.precio, default=None)
+    valor_total_inventario = sum(p.precio * p.stock for p in productos)
+
+    return render_template("reportes.html", 
+                           total_productos=total_productos, 
+                           stock_bajo=stock_bajo,
+                           producto_mas_caro=producto_mas_caro, 
+                           producto_mas_barato=producto_mas_barato, 
+                           valor_total_inventario=valor_total_inventario)
